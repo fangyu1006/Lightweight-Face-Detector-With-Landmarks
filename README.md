@@ -1,22 +1,40 @@
 # Lightwight Face Detector
+
+## Contents
+* [Introduction](#introduction)
+  * [Functions](#functions)
+  * [Test environment](#test environment)
+* [Evaluation](#evaluation)
+  * [Widerface](#Widerface)
+  * [Parameter and flop](#Parameter and flop)
+  * [Speed](#speed)
+* [How to use](#how to use)
+  * [Installation](#installation)
+  * [Training](#training)
+  * [Evaluation](#evaluation)
+  * [Convertor](#convertor)
+  * [C++_inference](#c++_inference)
+* [References](#references)
+
+
 ## Introduction
 This project provides a serias of lightweight face detectors with landmarks which can be deployed on mobile devices.
  - Modify the anchor size of [Retinaface-mobile0.25](https://github.com/biubug6/Pytorch_Retinaface)
  - Add landmarks estimation to [Face-Detector-1MB](https://github.com/Linzaer/Ultra-Light-Fast-Generic-Face-Detector-1MB) 
-## Functions
+### Functions
  - Train/test/evaluation/ncnn/tensorflow/tflite/C++ inference of Retinaface-mobile0.25
  - Train/test/evaluation/ncnn/tensorflow/tflite/C++ inference of Face-Detector-1MB slim and RFB version
  - Add 5 landmarks estimation to Face-Detector-1MB
  - Support the inference using pytorch/ncnn/tensorflow/tflite
 
-## Test environment
+### Test environment
 - Ubuntu18.04
 - Python3.7
 - Pytorch1.2
 - CUDA10.0 + CUDNN7.5
 
-## Accuracy evaluation
-### Evaluation on Widerface
+## Evaluation
+### Widerface
 
  - Evaluation result on wider face val (input image size: **320*240**）
  
@@ -43,7 +61,7 @@ version-RFB(our)|0.865    |0.828       |0.622
 Retinaface-Mobilenet-0.25(our)  |**0.873**|**0.836**|**0.638**
 
 
-## Parameter and flop
+### Parameter and flop
 
 Methods|parameter(M)|flop(M) 
 ------|--------|----------
@@ -51,17 +69,28 @@ version-slim(our)|0.343     |98.793
 version-RFB(our)|0.359    |118.435
 Retinaface-Mobilenet-0.25(our)  |0.426|193.921
 
+### Speed
+ - Test speed on [RK3399](http://opensource.rock-chips.com/wiki_RK3399) using tflite format
+Input image size: **320*240**
+Methods|Speed(ms)
+------|-------|----------
+MTCNN|325
+version-slim(our)|82 
+version-RFB(our)|94
+Retinaface-Mobilenet-0.25(our)|103
 
-### Contents
-- [Installation](#installation)
-- [Training](#training)
-- [Evaluation](#evaluation)
-- [C++_inference _ncnn](#c++_inference_ncnn)
-- [References](#references)
+Input image size: **640*480**
+Methods|Speed(ms)
+------|-------|----------
+MTCNN|420
+version-slim(our)|342
+version-RFB(our)|380
+Retinaface-Mobilenet-0.25(our)|438
 
-## Installation
+##How to use
+### Installation
 ##### Clone and install
-1. git clone https://github.com/biubug6/Face-Detector-1MB-with-landmark.git
+1. git clone this project
 
 2. Pytorch version 1.1.0+ and torchvision 0.3.0+ are needed.
 
@@ -116,70 +145,61 @@ python evaluation.py
 ```
 3. You can also use widerface official Matlab evaluate demo in [Here](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/WiderFace_Results.html)
 
-## C++_inference _ncnn
+
+## Convertor
+ - Convert pytorch to onnx/ncnn/caffe/tensorflow/tflite
+ - Converting script on convertor folder
+
 1. Generate onnx file
 ```Shell
 python convert_to_onnx.py --trained_model weight_file --network mobile0.25 or slim or RFB
 ```
 2. Onnx file change to ncnn(*.param and *.param)
 ```Shell
-cp *.onnx ./Face_Detector_ncnn/tools
-cd ./Face_Detector_ncnn/tools
+cp *.onnx ./Detector_cpp/Face_Detector_ncnn/tools
+cd ./Detector_cpp/Face_Detector_ncnn/tools
 ./onnx2ncnn face.param face.bin
 ```
-3. Move *.param and *.bin to model
+3. Simplify onnx file
 ```Shell
-cp face.param ../model
-cp face.bin ../model
+pip install onnx-simplifier
+python-m onnxsim input_onnx_model output_onnx_model
 ```
-4. Build Project(set opencv path in CmakeList.txt)
+4. Convert to Caffe 
+```Shell
+python convertCaffe.py
+```
+5. Convert to Tensorflow
+```Shell
+python demoCaffe.py
+python froze_graph_from_ckpt.py
+```
+6. Convert to Tensorflow lite
+```Shell
+python convert_to_tflite.py
+```
+
+## C++_inference 
+ - C++ inference code for ncnn/tf/tflite on Detector_cpp folder
+1. Build Project(set opencv path in CmakeList.txt)
 ```Shell
 mkdir build
 cd build
 cmake ..
 make -j4
 ```
-5. run
+2. run
 ```Shell
 ./FaceDetector *.jpg
+./FaceDetectorFolder [folder path]
 ```
-
-We also provide the converted file in "./model".
-```Shell
-face.param
-face.bin
-```
-
-## Convert pytorch to Caffe/Tensorflow/Tflite
-1. Generate onnx file
-```Shell
-python convert_to_onnx.py --trained_model weight_file --network mobile0.25 or slim or RFB
-```
-2. Simplify onnx file
-```Shell
-pip install onnx-simplifier
-python-m onnxsim input_onnx_model output_onnx_model
-```
-3. Convert to Caffe 
-```Shell
-python convertCaffe.py
-```
-3. Convert to Tensorflow
-```Shell
-python demoCaffe.py
-python froze_graph_from_ckpt.py
-```
-4. Convert to Tensorflow lite
-```Shell
-python convert_to_tflite.py
-```
-
 
 ## References
 - [FaceBoxes](https://github.com/zisianw/FaceBoxes.PyTorch)
 - [Retinaface (mxnet)](https://github.com/deepinsight/insightface/tree/master/RetinaFace)
 - [Retinaface (pytorch)](https://github.com/biubug6/Pytorch_Retinaface)
 - [Ultra-Light-Fast-Generic-Face-Detector-1MB](https://github.com/Linzaer/Ultra-Light-Fast-Generic-Face-Detector-1MB)
+- [Face-Detector-1MB-with-landmark](https://github.com/biubug6/Face-Detector-1MB-with-landmark)
 ```
 @inproceedings{deng2019retinaface,
 title={RetinaFace: Single-stage Dense Face Localisation in the Wild},
