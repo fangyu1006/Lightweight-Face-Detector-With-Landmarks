@@ -1,14 +1,14 @@
-# Lightwight Face Detector
+# Lightwight Face Detector with Landmarks
 
 ## Contents
 * [Introduction](#introduction)
   * [Functions](#functions)
-  * [Test environment](#test environment)
+  * [Test_environment](#test_environment)
 * [Evaluation](#evaluation)
   * [Widerface](#Widerface)
-  * [Parameter and flop](#Parameter and flop)
+  * [Parameter_and_flop](#Parameter_and_flop)
   * [Speed](#speed)
-* [How to use](#how to use)
+* [How_to_use](#how_to_use)
   * [Installation](#installation)
   * [Training](#training)
   * [Evaluation](#evaluation)
@@ -27,7 +27,7 @@ This project provides a serias of lightweight face detectors with landmarks whic
  - Add 5 landmarks estimation to Face-Detector-1MB
  - Support the inference using pytorch/ncnn/tensorflow/tflite
 
-### Test environment
+### Test_environment
 - Ubuntu18.04
 - Python3.7
 - Pytorch1.2
@@ -61,7 +61,7 @@ version-RFB(our)|0.865    |0.828       |0.622
 Retinaface-Mobilenet-0.25(our)  |**0.873**|**0.836**|**0.638**
 
 
-### Parameter and flop
+### Parameter_and_flop
 
 Methods|parameter(M)|flop(M) 
 ------|--------|----------
@@ -91,7 +91,7 @@ version-slim(our)|342
 version-RFB(our)|380
 Retinaface-Mobilenet-0.25(our)|438
 
-## How to use
+## How_to_use
 ### Installation
 ##### Clone and install
 1. git clone this project
