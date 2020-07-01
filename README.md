@@ -71,9 +71,11 @@ Retinaface-Mobilenet-0.25(our)  |0.426|193.921
 
 ### Speed
  - Test speed on [RK3399](http://opensource.rock-chips.com/wiki_RK3399) using tflite format
+
 Input image size: **320*240**
+
 Methods|Speed(ms)
-------|-------|----------
+------|-------
 MTCNN|325
 version-slim(our)|82 
 version-RFB(our)|94
@@ -81,13 +83,13 @@ Retinaface-Mobilenet-0.25(our)|103
 
 Input image size: **640*480**
 Methods|Speed(ms)
-------|-------|----------
+------|-------
 MTCNN|420
 version-slim(our)|342
 version-RFB(our)|380
 Retinaface-Mobilenet-0.25(our)|438
 
-##How to use
+## How to use
 ### Installation
 ##### Clone and install
 1. git clone this project
