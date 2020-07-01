@@ -81,7 +81,9 @@ version-slim(our)|82
 version-RFB(our)|94
 Retinaface-Mobilenet-0.25(our)|103
 
+
 Input image size: **640*480**
+
 Methods|Speed(ms)
 ------|-------
 MTCNN|420
@@ -119,6 +121,9 @@ Link: from [google cloud](https://drive.google.com/open?id=11UGV3nbVv1x9IC--_tK3
 ## Training
 
 1. Before training, you can check network configuration (e.g. batch_size, min_sizes and steps etc..) in ``data/config.py and train.py``.
+```
+ adjuct lmk_weight and loc_weight to improve the landmarks accuracy
+```
 
 2. Train the model using WIDER FACE:
   ```Shell

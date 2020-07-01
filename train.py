@@ -138,7 +138,7 @@ def train():
         # backprop
         optimizer.zero_grad()
         loss_l, loss_c, loss_landm = criterion(out, priors, targets)
-        loss = cfg['loc_weight'] * loss_l + loss_c + loss_landm
+        loss = cfg['loc_weight'] * loss_l + loss_c + cfg['lmk_weight'] * loss_landm
         loss.backward()
         optimizer.step()
         load_t1 = time.time()
